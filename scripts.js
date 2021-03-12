@@ -26,13 +26,18 @@ $(document).ready(function () {
         });
     }
     function getpopluar() {
+        let count = 0;
         let pophtml = "";
         $.ajax({
             method: "GET",
             url: "https://smileschool-api.hbtn.info/popular-tutorials",
             success: (response) => {
                 response.forEach((element) => {
-                    console.log("ee");
+                    let active = ""
+                    if (count < 4) {
+                        active = "active";
+                    }
+                    count += 1;
                     let stars = "";
                     $("#data-loader_two").hide();
                     for (let i = 0; i < element.star; i++) {
@@ -41,7 +46,7 @@ $(document).ready(function () {
                     for (let i = 0; i < 5 - element.star; i++) {
                         stars += '<img src="./images/star_off.png" class="mt-2 mystar" alt="Star Rating"/>'
                     }
-                    pophtml += '<div class="carousel-item active">' +
+                    pophtml += '<div><div class="carousel-item' +  active + '">' +
                     '<div class="row justify-content-sm-around ml-3 col-lg-10 ml-5 mx-auto">' +
                     '<div class="card border-0" style="width: 18rem">' +
                     '<img class="card-img-top" src="' + element.thumb_url + '" alt="Card image cap"/>' +
@@ -51,15 +56,54 @@ $(document).ready(function () {
                     '<div class="justify-content-space-between">' +
                     '<img src="' + element.author_pic_url + '" alt="reviewer" class="rounded-circle" width="30" height="30"/>' +
                     '<h5 class="reviewer-name">' + element.author + '</h5>' + stars +
-                    '<h5 class="time float-right my-2">' + element.duration + '</h5></div></div></div>';
-                    console.log(pophtml);
+                    '<h5 class="time float-right my-2">' + element.duration + '</h5></div></div></div></div></div></div>';
 
                 });
-                $('#popvideo').append(pophtml);
+                $('#video-carousel').append(pophtml);
+            }
+        });
+    }
+
+    function videopopluar() {
+        let count = 0;
+        let pophtml = "";
+        $.ajax({
+            method: "GET",
+            url: "https://smileschool-api.hbtn.info/latest-videos",
+            success: (response) => {
+                response.forEach((element) => {
+                    let active = ""
+                    if (count < 4) {
+                        active = "active";
+                    }
+                    count += 1;
+                    let stars = "";
+                    $("#data-loader_three").hide();
+                    for (let i = 0; i < element.star; i++) {
+                        stars += '<img src="./images/star_on.png" class="mt-2 mystar" alt="Star Rating"/>'
+                    }
+                    for (let i = 0; i < 5 - element.star; i++) {
+                        stars += '<img src="./images/star_off.png" class="mt-2 mystar" alt="Star Rating"/>'
+                    }
+                    pophtml += '<div><div class="carousel-item' +  active + '">' +
+                    '<div class="row justify-content-sm-around ml-3 col-lg-10 ml-5 mx-auto">' +
+                    '<div class="card border-0" style="width: 18rem">' +
+                    '<img class="card-img-top" src="' + element.thumb_url + '" alt="Card image cap"/>' +
+                    '<div class="card-img-overlay"><img src="./images/play.png" class="play-img" alt="Play image" width="60" height="60"/>' +
+                    '</div><div class="card-body"><h5 class="card-title">' + element.title + '</h5>' +
+                    '<p class="card-text">' + element["sub-title"]+ '</p>' +
+                    '<div class="justify-content-space-between">' +
+                    '<img src="' + element.author_pic_url + '" alt="reviewer" class="rounded-circle" width="30" height="30"/>' +
+                    '<h5 class="reviewer-name">' + element.author + '</h5>' + stars +
+                    '<h5 class="time float-right my-2">' + element.duration + '</h5></div></div></div></div></div></div>';
+
+                });
+                $('#video-carousel_two').append(pophtml);
             }
         });
     }
 
     loadQuotes();
     getpopluar();
+    videopopluar();
 });
